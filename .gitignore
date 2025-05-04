@@ -1,0 +1,102 @@
+# --- Operating System Files ---
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs*.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.trash-*
+
+# --- IDE & Editor Files ---
+# Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# JetBrains (Rider, IntelliJ, etc.)
+.idea/
+*.iml
+*.iws
+*.ipr
+*.ids
+*.orig
+
+# --- Build & Dependency Directories ---
+# Binaries and compiled files
+bin/
+obj/
+[Bb]uild/
+[Bb]uildArtifacts/
+out/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.pyc
+__pycache__/
+
+# NuGet
+packages/
+*.nupkg
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Python
+venv/
+.env/
+ENV/
+*.pyc
+*.pyo
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+
+# --- Logs & Temp Files ---
+*.log
+*.tmp
+*.temp
+
+# --- Environment Files ---
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# --- Testing & Coverage ---
+coverage/
+*.coverage
+htmlcov/
+.pytest_cache/
+
+# --- Local Development Files ---
+.local
+.sql
+.sqlite
+*.db
