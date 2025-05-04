@@ -1,0 +1,20 @@
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\bin\Debug\Image_Processing_Project.exe.config
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\bin\Debug\Image_Processing_Project.exe
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\bin\Debug\Image_Processing_Project.pdb
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.csproj.AssemblyReference.cache
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.Form1.resources
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.Properties.Resources.resources
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.csproj.GenerateResource.cache
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.csproj.CoreCompileInputs.cache
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.exe
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\image_processing-main\Image_Processing_Project\obj\Debug\Image_Processing_Project.pdb
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\bin\Debug\Image_Processing_Project.exe.config
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\bin\Debug\Image_Processing_Project.exe
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\bin\Debug\Image_Processing_Project.pdb
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.csproj.AssemblyReference.cache
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.Form1.resources
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.Properties.Resources.resources
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.csproj.GenerateResource.cache
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.csproj.CoreCompileInputs.cache
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.exe
+C:\Users\wwwda\OneDrive\Masaüstü\araplar proje\kesmebicme\Yeni klasör\image_processing-main_2\Image_Processing_Project\obj\Debug\Image_Processing_Project.pdb
