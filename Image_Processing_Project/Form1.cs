@@ -19,6 +19,8 @@ namespace Image_Processing_Project
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            comboBox1.Items.Add("Toplama");
+            comboBox1.Items.Add("Çarpma");
             comboBox1.Items.Add("Grayscale");
             comboBox1.Items.Add("Binary");
             comboBox1.Items.Add("HSV");
@@ -31,11 +33,7 @@ namespace Image_Processing_Project
             comboBox1.Items.Add("Median Filtre");
             comboBox1.Items.Add("Adaptif Eşikleme");
             comboBox1.Items.Add("Sobel Kenar Algılama");
-            ///
-            comboBox1.Items.Add("Toplama");
-            comboBox1.Items.Add("Çarpma");
             comboBox1.Items.Add("Gaussian Blur");
-            ///
 
 
         }
@@ -66,6 +64,44 @@ namespace Image_Processing_Project
             }
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool showSecondImage = comboBox1.SelectedItem?.ToString() == "Toplama" ||
+                         comboBox1.SelectedItem?.ToString() == "Çarpma";
+
+            UploadSecondImage.Visible = showSecondImage;
+            pictureBox3.Visible = showSecondImage;
+            label4.Visible = showSecondImage;
+        }
+
+        private void Reset_Click(object sender, EventArgs e)
+        {
+            // dispose images
+            if (originalImage != null)
+            {
+                originalImage.Dispose();
+                originalImage = null;
+            }
+            if (originalImage2 != null)
+            {
+                originalImage2.Dispose();
+                originalImage2 = null;
+            }
+
+            pictureBox1.Image = null;
+            pictureBox2.Image = null;
+            pictureBox3.Image = null;
+
+            // clear chart
+            chart1.Series.Clear();
+            chart1.ChartAreas[0].AxisY.Maximum = double.NaN;
+
+            // reset dropdown
+            comboBox1.SelectedIndex = -1;
+
+            this.Refresh();
+        }
+
 
 
 
@@ -77,8 +113,6 @@ namespace Image_Processing_Project
                 return;
             }
 
-            // TODO: add original image2 condition lateer
-
             if (comboBox1.SelectedItem == null)
             {
                 MessageBox.Show("Lütfen bir işlem seçin.");
@@ -87,6 +121,16 @@ namespace Image_Processing_Project
 
             string selectedOperation = comboBox1.SelectedItem.ToString();
             Bitmap processedImage = null;
+
+            if (selectedOperation == "Toplama" || selectedOperation == "Çarpma")
+                
+{
+                if (originalImage2 == null)
+                {
+                    MessageBox.Show("Lütfen ikinci bir resim yükleyin.");
+                    return;
+                }
+            }
 
             switch (selectedOperation)
             {
@@ -777,6 +821,7 @@ namespace Image_Processing_Project
             return blurred;
         }
 
+        
     }
 }
 

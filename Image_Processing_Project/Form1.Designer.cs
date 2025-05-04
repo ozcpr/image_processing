@@ -43,6 +43,7 @@
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.label4 = new System.Windows.Forms.Label();
             this.UploadSecondImage = new System.Windows.Forms.Button();
+            this.Reset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
@@ -63,7 +64,7 @@
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.pictureBox2.Location = new System.Drawing.Point(502, 106);
+            this.pictureBox2.Location = new System.Drawing.Point(528, 106);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(192, 208);
@@ -75,7 +76,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label1.Location = new System.Drawing.Point(128, 329);
+            this.label1.Location = new System.Drawing.Point(84, 88);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(116, 16);
@@ -86,7 +87,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
-            this.label2.Location = new System.Drawing.Point(565, 329);
+            this.label2.Location = new System.Drawing.Point(530, 88);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(85, 16);
@@ -104,16 +105,17 @@
             this.comboBox1.Size = new System.Drawing.Size(164, 25);
             this.comboBox1.TabIndex = 4;
             this.comboBox1.Text = "         İşlem  Seçiniz";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.RoyalBlue;
             this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button1.Location = new System.Drawing.Point(502, 383);
+            this.button1.Location = new System.Drawing.Point(308, 183);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(118, 30);
+            this.button1.Size = new System.Drawing.Size(164, 49);
             this.button1.TabIndex = 5;
             this.button1.Text = "Başlat";
             this.button1.UseVisualStyleBackColor = false;
@@ -124,7 +126,7 @@
             this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(162)));
             this.button2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button2.Location = new System.Drawing.Point(82, 383);
+            this.button2.Location = new System.Drawing.Point(82, 318);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(118, 30);
@@ -164,41 +166,59 @@
             // pictureBox3
             // 
             this.pictureBox3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.pictureBox3.Location = new System.Drawing.Point(82, 442);
+            this.pictureBox3.Location = new System.Drawing.Point(82, 387);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(192, 208);
             this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox3.TabIndex = 9;
             this.pictureBox3.TabStop = false;
+            this.pictureBox3.Visible = false;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Arial", 10.2F, System.Drawing.FontStyle.Bold);
-            this.label4.Location = new System.Drawing.Point(128, 668);
+            this.label4.Location = new System.Drawing.Point(84, 368);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(116, 16);
             this.label4.TabIndex = 10;
             this.label4.Text = "Orijinal Resim 2";
+            this.label4.Visible = false;
             // 
             // UploadSecondImage
             // 
             this.UploadSecondImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.UploadSecondImage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
             this.UploadSecondImage.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.UploadSecondImage.Location = new System.Drawing.Point(82, 717);
+            this.UploadSecondImage.Location = new System.Drawing.Point(82, 601);
             this.UploadSecondImage.Name = "UploadSecondImage";
             this.UploadSecondImage.Size = new System.Drawing.Size(118, 32);
             this.UploadSecondImage.TabIndex = 11;
             this.UploadSecondImage.Text = "Resmi Yükle";
             this.UploadSecondImage.UseVisualStyleBackColor = false;
+            this.UploadSecondImage.Visible = false;
             this.UploadSecondImage.Click += new System.EventHandler(this.UploadSecondImage_Click);
+            // 
+            // Reset
+            // 
+            this.Reset.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.Reset.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Bold);
+            this.Reset.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.Reset.Location = new System.Drawing.Point(308, 142);
+            this.Reset.Margin = new System.Windows.Forms.Padding(2);
+            this.Reset.Name = "Reset";
+            this.Reset.Size = new System.Drawing.Size(164, 30);
+            this.Reset.TabIndex = 12;
+            this.Reset.Text = "Sıfırla";
+            this.Reset.UseVisualStyleBackColor = false;
+            this.Reset.Click += new System.EventHandler(this.Reset_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1378, 835);
+            this.Controls.Add(this.Reset);
             this.Controls.Add(this.UploadSecondImage);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.pictureBox3);
@@ -238,6 +258,7 @@
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button UploadSecondImage;
+        private System.Windows.Forms.Button Reset;
     }
 }
 
