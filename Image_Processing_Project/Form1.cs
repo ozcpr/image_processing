@@ -14,6 +14,8 @@ namespace Image_Processing_Project
         private Point cropEnd;
         private Rectangle cropRect;
         private bool isSelecting = false;
+        private bool hasUserSelection = false;
+
 
         private Bitmap originalImage;
         private Bitmap originalImage2;
@@ -25,6 +27,7 @@ namespace Image_Processing_Project
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             comboBox1.Items.Add("Toplama");
             comboBox1.Items.Add("Çarpma");
             comboBox1.Items.Add("Grayscale");
@@ -41,15 +44,12 @@ namespace Image_Processing_Project
             comboBox1.Items.Add("Sobel Kenar Algılama");
             comboBox1.Items.Add("Gaussian Blur");
             comboBox1.Items.Add("90 Derece Döndür");
-            comboBox1.Items.Add("Yakınlaştır");
             comboBox1.Items.Add("Parlaklık Artır");
+            comboBox1.Items.Add("Genişleme (Dilation)");
+            comboBox1.Items.Add("Aşınma (Erosion)");
+            comboBox1.Items.Add("Açma (Opening)");
+            comboBox1.Items.Add("Kapama (Closing)");
 
-
-            //------------------------------------------------------
-            pictureBox1.MouseDown += PictureBox1_MouseDown;
-            pictureBox1.MouseMove += PictureBox1_MouseMove;
-            pictureBox1.MouseUp += PictureBox1_MouseUp;
-            pictureBox1.Paint += PictureBox1_Paint; // Dikdörtgeni göstermek için
 
 
         }
@@ -118,59 +118,8 @@ namespace Image_Processing_Project
             this.Refresh();
         }
 
-        private void PictureBox1_MouseDown(object sender, MouseEventArgs e)
-        {
-            isSelecting = true;
-            cropStart = e.Location;
-        }
+       
 
-        private void PictureBox1_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (isSelecting)
-            {
-                cropEnd = e.Location;
-                pictureBox1.Invalidate(); // Yeniden çiz
-            }
-        }
-
-        private void PictureBox1_MouseUp(object sender, MouseEventArgs e)
-        {
-            isSelecting = false;
-            cropRect = GetRectangle(cropStart, cropEnd);
-
-            if (cropRect.Width > 0 && cropRect.Height > 0 && originalImage != null)
-            {
-                Bitmap source = new Bitmap(pictureBox1.Image);
-                Bitmap cropped = ApplyCropFromRectangle(source, cropRect);
-                pictureBox2.Image = cropped;
-            }
-            else
-            {
-              
-            }
-        }
-
-
-        private void PictureBox1_Paint(object sender, PaintEventArgs e)
-        {
-            if (isSelecting)
-            {
-                Rectangle rect = GetRectangle(cropStart, cropEnd);
-                using (Pen pen = new Pen(Color.Red, 2))
-                {
-                    e.Graphics.DrawRectangle(pen, rect);
-                }
-            }
-        }
-
-        private Rectangle GetRectangle(Point p1, Point p2)
-        {
-            int x = Math.Min(p1.X, p2.X);
-            int y = Math.Min(p1.Y, p2.Y);
-            int width = Math.Abs(p1.X - p2.X);
-            int height = Math.Abs(p1.Y - p2.Y);
-            return new Rectangle(x, y, width, height);
-        }
 
 
         private void button1_Click(object sender, EventArgs e)
@@ -260,10 +209,6 @@ namespace Image_Processing_Project
                     Bitmap inputImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
                     processedImage = ApplyRotate90(inputImage);
                     break;
-                case "Yakınlaştır":
-                    processedImage = ApplyZoomIn(originalImage); // 1.5x büyüt
-                    break;
-
                 case "Parlaklık Artır":
                     {
                         Bitmap selectedImage;
@@ -282,7 +227,31 @@ namespace Image_Processing_Project
                         break;
                     }
 
+                case "Genişleme (Dilation)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyDilation(selectedImage);
+                        break;
+                    }
 
+                case "Aşınma (Erosion)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyErosion(selectedImage);
+                        break;
+                    }
+                case "Açma (Opening)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyOpening(selectedImage);
+                        break;
+                    }
+                case "Kapama (Closing)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyClosing(selectedImage);
+                        break;
+                    }
 
 
                 default:
@@ -926,34 +895,12 @@ namespace Image_Processing_Project
             return rotated;
         }
 
-        private Bitmap ApplyZoomIn(Bitmap image, float scale = 1.5f)
-        {
-            int newWidth = (int)(image.Width * scale);
-            int newHeight = (int)(image.Height * scale);
-
-            Bitmap zoomedImage = new Bitmap(newWidth, newHeight);
-
-            using (Graphics g = Graphics.FromImage(zoomedImage))
-            {
-                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-                g.DrawImage(image, 0, 0, newWidth, newHeight);
-            }
-
-            return zoomedImage;
-        }
-
- 
-
-        private Bitmap ApplyCropFromRectangle(Bitmap source, Rectangle rect)
-        {
-            Bitmap cropped = new Bitmap(rect.Width, rect.Height);
-            using (Graphics g = Graphics.FromImage(cropped))
-            {
-                g.DrawImage(source, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
-            }
-            return cropped;
-        }
-
+        /*bu alanda yakınlaştırma uzaklaştırma ekik
+        *
+        *
+        *
+        *
+        */
         private Bitmap ApplyBrightness(Bitmap image, int increaseAmount = 30)
         {
             Bitmap result = new Bitmap(image.Width, image.Height);
@@ -973,6 +920,78 @@ namespace Image_Processing_Project
             }
 
             return result;
+        }
+
+        //----------------------------------
+        private Bitmap ApplyDilation(Bitmap src)//Genişleme
+        {
+            Bitmap result = new Bitmap(src.Width, src.Height);
+
+            for (int y = 1; y < src.Height - 1; y++)
+            {
+                for (int x = 1; x < src.Width - 1; x++)
+                {
+                    int maxR = 0, maxG = 0, maxB = 0;
+
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        for (int i = -1; i <= 1; i++)
+                        {
+                            Color pixel = src.GetPixel(x + i, y + j);
+                            maxR = Math.Max(maxR, pixel.R);
+                            maxG = Math.Max(maxG, pixel.G);
+                            maxB = Math.Max(maxB, pixel.B);
+                        }
+                    }
+
+                    Color newColor = Color.FromArgb(maxR, maxG, maxB);
+                    result.SetPixel(x, y, newColor);
+                }
+            }
+
+            return result;
+        }
+
+        private Bitmap ApplyErosion(Bitmap src)//Aşınma
+        {
+            Bitmap result = new Bitmap(src.Width, src.Height);
+
+            for (int y = 1; y < src.Height - 1; y++)
+            {
+                for (int x = 1; x < src.Width - 1; x++)
+                {
+                    int minR = 255, minG = 255, minB = 255;
+
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        for (int i = -1; i <= 1; i++)
+                        {
+                            Color pixel = src.GetPixel(x + i, y + j);
+                            minR = Math.Min(minR, pixel.R);
+                            minG = Math.Min(minG, pixel.G);
+                            minB = Math.Min(minB, pixel.B);
+                        }
+                    }
+
+                    Color newColor = Color.FromArgb(minR, minG, minB);
+                    result.SetPixel(x, y, newColor);
+                }
+            }
+
+            return result;
+        }
+
+        private Bitmap ApplyOpening(Bitmap src)
+        {
+            Bitmap eroded = ApplyErosion(src);      // İlk olarak aşındır
+            Bitmap opened = ApplyDilation(eroded);  // Sonra genişlet
+            return opened;
+        }
+        private Bitmap ApplyClosing(Bitmap src)
+        {
+            Bitmap dilated = ApplyDilation(src);     // Önce genişlet
+            Bitmap closed = ApplyErosion(dilated);   // Sonra aşındır
+            return closed;
         }
 
 
