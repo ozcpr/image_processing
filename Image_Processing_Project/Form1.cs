@@ -7,8 +7,16 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Image_Processing_Project
 {
+
     public partial class Form1 : Form
     {
+        private Point cropStart;
+        private Point cropEnd;
+        private Rectangle cropRect;
+        private bool isSelecting = false;
+        private bool hasUserSelection = false;
+
+
         private Bitmap originalImage;
         private Bitmap originalImage2;
 
@@ -19,6 +27,7 @@ namespace Image_Processing_Project
 
         private void Form1_Load(object sender, EventArgs e)
         {
+
             comboBox1.Items.Add("Toplama");
             comboBox1.Items.Add("Çarpma");
             comboBox1.Items.Add("Grayscale");
@@ -34,6 +43,13 @@ namespace Image_Processing_Project
             comboBox1.Items.Add("Adaptif Eşikleme");
             comboBox1.Items.Add("Sobel Kenar Algılama");
             comboBox1.Items.Add("Gaussian Blur");
+            comboBox1.Items.Add("90 Derece Döndür");
+            comboBox1.Items.Add("Parlaklık Artır");
+            comboBox1.Items.Add("Genişleme (Dilation)");
+            comboBox1.Items.Add("Aşınma (Erosion)");
+            comboBox1.Items.Add("Açma (Opening)");
+            comboBox1.Items.Add("Kapama (Closing)");
+
 
 
         }
@@ -102,6 +118,7 @@ namespace Image_Processing_Project
             this.Refresh();
         }
 
+       
 
 
 
@@ -188,10 +205,60 @@ namespace Image_Processing_Project
                 case "Gaussian Blur":
                     processedImage = ApplyGaussianBlur(originalImage);
                     break;
+                case "90 Derece Döndür":
+                    Bitmap inputImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                    processedImage = ApplyRotate90(inputImage);
+                    break;
+                case "Parlaklık Artır":
+                    {
+                        Bitmap selectedImage;
+
+                        // Eğer işlem yapılmışsa onu kullan, yoksa orijinali
+                        if (pictureBox2.Image != null)
+                        {
+                            selectedImage = new Bitmap(pictureBox2.Image);
+                        }
+                        else
+                        {
+                            selectedImage = new Bitmap(originalImage);
+                        }
+
+                        processedImage = ApplyBrightness(selectedImage);
+                        break;
+                    }
+
+                case "Genişleme (Dilation)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyDilation(selectedImage);
+                        break;
+                    }
+
+                case "Aşınma (Erosion)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyErosion(selectedImage);
+                        break;
+                    }
+                case "Açma (Opening)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyOpening(selectedImage);
+                        break;
+                    }
+                case "Kapama (Closing)":
+                    {
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ApplyClosing(selectedImage);
+                        break;
+                    }
+
 
                 default:
                     MessageBox.Show("Seçilen işlem desteklenmiyor.");
                     return;
+               
+
             }
 
             pictureBox2.Image = ResizeImage(processedImage, 256, 256);
@@ -821,7 +888,113 @@ namespace Image_Processing_Project
             return blurred;
         }
 
-        
+        private Bitmap ApplyRotate90(Bitmap image)
+        {
+            Bitmap rotated = (Bitmap)image.Clone();
+            rotated.RotateFlip(RotateFlipType.Rotate90FlipNone);
+            return rotated;
+        }
+
+        /*bu alanda yakınlaştırma uzaklaştırma ekik
+        *
+        *
+        *
+        *
+        */
+        private Bitmap ApplyBrightness(Bitmap image, int increaseAmount = 30)
+        {
+            Bitmap result = new Bitmap(image.Width, image.Height);
+
+            for (int y = 0; y < image.Height; y++)
+            {
+                for (int x = 0; x < image.Width; x++)
+                {
+                    Color pixel = image.GetPixel(x, y);
+
+                    int r = Math.Min(255, pixel.R + increaseAmount);
+                    int g = Math.Min(255, pixel.G + increaseAmount);
+                    int b = Math.Min(255, pixel.B + increaseAmount);
+
+                    result.SetPixel(x, y, Color.FromArgb(r, g, b));
+                }
+            }
+
+            return result;
+        }
+
+        //----------------------------------
+        private Bitmap ApplyDilation(Bitmap src)//Genişleme
+        {
+            Bitmap result = new Bitmap(src.Width, src.Height);
+
+            for (int y = 1; y < src.Height - 1; y++)
+            {
+                for (int x = 1; x < src.Width - 1; x++)
+                {
+                    int maxR = 0, maxG = 0, maxB = 0;
+
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        for (int i = -1; i <= 1; i++)
+                        {
+                            Color pixel = src.GetPixel(x + i, y + j);
+                            maxR = Math.Max(maxR, pixel.R);
+                            maxG = Math.Max(maxG, pixel.G);
+                            maxB = Math.Max(maxB, pixel.B);
+                        }
+                    }
+
+                    Color newColor = Color.FromArgb(maxR, maxG, maxB);
+                    result.SetPixel(x, y, newColor);
+                }
+            }
+
+            return result;
+        }
+
+        private Bitmap ApplyErosion(Bitmap src)//Aşınma
+        {
+            Bitmap result = new Bitmap(src.Width, src.Height);
+
+            for (int y = 1; y < src.Height - 1; y++)
+            {
+                for (int x = 1; x < src.Width - 1; x++)
+                {
+                    int minR = 255, minG = 255, minB = 255;
+
+                    for (int j = -1; j <= 1; j++)
+                    {
+                        for (int i = -1; i <= 1; i++)
+                        {
+                            Color pixel = src.GetPixel(x + i, y + j);
+                            minR = Math.Min(minR, pixel.R);
+                            minG = Math.Min(minG, pixel.G);
+                            minB = Math.Min(minB, pixel.B);
+                        }
+                    }
+
+                    Color newColor = Color.FromArgb(minR, minG, minB);
+                    result.SetPixel(x, y, newColor);
+                }
+            }
+
+            return result;
+        }
+
+        private Bitmap ApplyOpening(Bitmap src)
+        {
+            Bitmap eroded = ApplyErosion(src);      // İlk olarak aşındır
+            Bitmap opened = ApplyDilation(eroded);  // Sonra genişlet
+            return opened;
+        }
+        private Bitmap ApplyClosing(Bitmap src)
+        {
+            Bitmap dilated = ApplyDilation(src);     // Önce genişlet
+            Bitmap closed = ApplyErosion(dilated);   // Sonra aşındır
+            return closed;
+        }
+
+
     }
 }
 
