@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using static System.Windows.Forms.AxHost;
 
 namespace Image_Processing_Project
 {
@@ -20,10 +21,14 @@ namespace Image_Processing_Project
         private Bitmap originalImage;
         private Bitmap originalImage2;
 
+        private Bitmap previewImage;
+
         public Form1()
         {
             InitializeComponent();
+            trackBarZoom.Scroll += trackBarZoom_Scroll;
         }
+
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -51,9 +56,12 @@ namespace Image_Processing_Project
             comboBox1.Items.Add("Kapama (Closing)");
 
 
+            
+
 
         }
 
+        
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -248,8 +256,11 @@ namespace Image_Processing_Project
                     }
                 case "Kapama (Closing)":
                     {
-                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        /*Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
                         processedImage = ApplyClosing(selectedImage);
+                        break;*/
+                        Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
+                        processedImage = ZoomImage(selectedImage, 5); 
                         break;
                     }
 
@@ -261,7 +272,12 @@ namespace Image_Processing_Project
 
             }
 
-            pictureBox2.Image = ResizeImage(processedImage, 256, 256);
+            previewImage = processedImage;   
+            pictureBox2.Image = previewImage;
+            pictureBox2.Width = previewImage.Width;
+            pictureBox2.Height = previewImage.Height;
+            trackBarZoom.Value = 1;       
+
         }
 
 
@@ -336,6 +352,26 @@ namespace Image_Processing_Project
             }
 
             return grayImage;
+        }
+
+        private Bitmap ZoomImage(Bitmap source, float scale)
+        {
+            int newWidth = (int)(source.Width * scale);
+            int newHeight = (int)(source.Height * scale);
+            Bitmap result = new Bitmap(newWidth, newHeight);
+
+            for (int y = 0; y < newHeight; y++)
+            {
+                for (int x = 0; x < newWidth; x++)
+                {
+                    // Map the destination pixel back to the source
+                    int srcX = Math.Min(source.Width - 1, (int)(x / scale));
+                    int srcY = Math.Min(source.Height - 1, (int)(y / scale));
+                    result.SetPixel(x, y, source.GetPixel(srcX, srcY));
+                }
+            }
+
+            return result;
         }
 
         private Bitmap ApplyBinary(Bitmap source, int threshold)
@@ -994,7 +1030,18 @@ namespace Image_Processing_Project
             return closed;
         }
 
+        private void trackBarZoom_Scroll(object sender, EventArgs e)
+        {
+            if (previewImage == null) return;      // last processed image 
 
+            float scale = trackBarZoom.Value / 6f;
+            // zoom in-out ratio
+
+            Bitmap zoomed = ZoomImage(previewImage, scale);
+            pictureBox2.Image = zoomed;
+            pictureBox2.Width = zoomed.Width;
+            pictureBox2.Height = zoomed.Height;
+        }
     }
 }
 
