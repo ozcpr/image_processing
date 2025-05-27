@@ -115,6 +115,7 @@ namespace Image_Processing_Project
             pictureBox1.Image = null;
             pictureBox2.Image = null;
             pictureBox3.Image = null;
+            trackBarZoom.Value = 1;
 
             // clear chart
             chart1.Series.Clear();
@@ -256,11 +257,8 @@ namespace Image_Processing_Project
                     }
                 case "Kapama (Closing)":
                     {
-                        /*Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
-                        processedImage = ApplyClosing(selectedImage);
-                        break;*/
                         Bitmap selectedImage = pictureBox2.Image != null ? new Bitmap(pictureBox2.Image) : originalImage;
-                        processedImage = ZoomImage(selectedImage, 5); 
+                        processedImage = ApplyClosing(selectedImage);
                         break;
                     }
 
@@ -274,8 +272,8 @@ namespace Image_Processing_Project
 
             previewImage = processedImage;   
             pictureBox2.Image = previewImage;
-            pictureBox2.Width = previewImage.Width;
-            pictureBox2.Height = previewImage.Height;
+/*            pictureBox2.Width = previewImage.Width;
+            pictureBox2.Height = previewImage.Height;*/
             trackBarZoom.Value = 1;       
 
         }
@@ -352,26 +350,6 @@ namespace Image_Processing_Project
             }
 
             return grayImage;
-        }
-
-        private Bitmap ZoomImage(Bitmap source, float scale)
-        {
-            int newWidth = (int)(source.Width * scale);
-            int newHeight = (int)(source.Height * scale);
-            Bitmap result = new Bitmap(newWidth, newHeight);
-
-            for (int y = 0; y < newHeight; y++)
-            {
-                for (int x = 0; x < newWidth; x++)
-                {
-                    // Map the destination pixel back to the source
-                    int srcX = Math.Min(source.Width - 1, (int)(x / scale));
-                    int srcY = Math.Min(source.Height - 1, (int)(y / scale));
-                    result.SetPixel(x, y, source.GetPixel(srcX, srcY));
-                }
-            }
-
-            return result;
         }
 
         private Bitmap ApplyBinary(Bitmap source, int threshold)
@@ -931,12 +909,37 @@ namespace Image_Processing_Project
             return rotated;
         }
 
-        /*bu alanda yakınlaştırma uzaklaştırma ekik
-        *
-        *
-        *
-        *
-        */
+        private Bitmap ApplyZoomImage(Bitmap source, float scale)
+        {
+            int newWidth = (int)(source.Width * scale);
+            int newHeight = (int)(source.Height * scale);
+            Bitmap result = new Bitmap(newWidth, newHeight);
+
+            for (int y = 0; y < newHeight; y++)
+            {
+                for (int x = 0; x < newWidth; x++)
+                {
+                    // Map the destination pixel back to the source
+                    int srcX = Math.Min(source.Width - 1, (int)(x / scale));
+                    int srcY = Math.Min(source.Height - 1, (int)(y / scale));
+                    result.SetPixel(x, y, source.GetPixel(srcX, srcY));
+                }
+            }
+
+            return result;
+        }
+
+        private void trackBarZoom_Scroll(object sender, EventArgs e)
+        {
+            if (previewImage == null) return;      // last processed image 
+
+            float scale = trackBarZoom.Value;
+
+            Bitmap zoomed = ApplyZoomImage(previewImage, scale);
+            pictureBox2.Image = zoomed;
+            pictureBox2.Width = zoomed.Width;
+            pictureBox2.Height = zoomed.Height;
+        }
         private Bitmap ApplyBrightness(Bitmap image, int increaseAmount = 30)
         {
             Bitmap result = new Bitmap(image.Width, image.Height);
@@ -1030,18 +1033,7 @@ namespace Image_Processing_Project
             return closed;
         }
 
-        private void trackBarZoom_Scroll(object sender, EventArgs e)
-        {
-            if (previewImage == null) return;      // last processed image 
-
-            float scale = trackBarZoom.Value / 6f;
-            // zoom in-out ratio
-
-            Bitmap zoomed = ZoomImage(previewImage, scale);
-            pictureBox2.Image = zoomed;
-            pictureBox2.Width = zoomed.Width;
-            pictureBox2.Height = zoomed.Height;
-        }
+        
     }
 }
 
